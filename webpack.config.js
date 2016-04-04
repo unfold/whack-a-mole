@@ -9,7 +9,7 @@ const entry = {
 }
 
 const output = {
-  path: path.join(__dirname, '/build/client'),
+  path: path.join(__dirname, '/build'),
   filename: '[name].js',
   publicPath: '/',
   pathinfo: !production,
