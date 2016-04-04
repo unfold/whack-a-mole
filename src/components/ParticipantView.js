@@ -3,9 +3,7 @@ import { connect } from 'react-firebase'
 import Register from './Register'
 import Game from './Game'
 
-@connect(() => ({
-  status: 'status',
-}), firebase => ({
+@connect(() => ({}), firebase => ({
   register: participant => {
     const ref = firebase.child('participants').push(participant)
     ref.onDisconnect().remove()

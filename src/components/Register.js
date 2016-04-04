@@ -1,23 +1,29 @@
 import React, { Component, PropTypes } from 'react'
+import emojiMap from '../utils/emoji-map.json'
+import map from 'lodash/map'
+import AvatarListItem from './AvatarListItem'
+
 
 export default class Register extends Component {
   static propTypes = {
     onRegister: PropTypes.func.isRequired,
   }
 
-  onRegister(event) {
-    event.preventDefault()
-    const participant = {
+  onSelectAvatar(avatar) {
+    this.props.onRegister({
       score: 0,
-      image: 'bob',
-    }
-    this.props.onRegister(participant)
+      avatar,
+    })
   }
+
+  onSelectAvatar = ::this.onSelectAvatar
 
   render() {
     return (
       <div className="Register">
-        <button onClick={::this.onRegister}>Register</button>
+        {map(emojiMap, (emoji, key) => (
+          <AvatarListItem key={key} onSelect={this.onSelectAvatar} name={key} emoji={emoji} />
+        ))}
       </div>
     )
   }

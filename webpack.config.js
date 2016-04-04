@@ -46,6 +46,11 @@ const loaders = [
       },
     },
   },
+  {
+    test: /\.json/,
+    exclude: /node_modules/,
+    loader: 'json',
+  },
 ]
 
 const plugins = [
