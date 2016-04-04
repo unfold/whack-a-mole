@@ -1,0 +1,14 @@
+{
+  "name": "whack-a-mole",
+  "description": "Whack a mole demo",
+  "env": {
+    "PORT": {
+      "required": true
+    },
+
+    "GOOGLE_ANALYTICS_ID": {
+      "description": "Google Analytics Property ID",
+      "required": false
+    }
+  }
+}
