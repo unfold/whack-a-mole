@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import express from 'express'
 import compression from 'compression'
-
-import devMiddleware from './dev-middleware'
 import renderStatic from './render-static'
 
 const {
@@ -17,6 +15,7 @@ const url = `http://${ HOSTNAME }:${ PORT }`
 const app = express()
 
 if (!production) {
+  const devMiddleware = require('./dev-middleware').default
   app.use(devMiddleware({ url }))
 }
 
