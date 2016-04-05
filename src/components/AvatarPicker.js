@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import look, { StyleSheet } from 'react-look'
 import AvatarListItem from './AvatarListItem'
+import AvatarIcon from './AvatarIcon'
 import Button from './Button'
-import emojiMap from '../utils/emoji-map.json'
 import map from 'lodash/map'
+import sample from 'lodash/sample'
 import cssEase from 'css-ease'
 
 let styles
@@ -16,7 +17,7 @@ export default class AvatarPicker extends Component {
   }
 
   state = {
-    selected: null,
+    selected: sample(AvatarIcon.keys),
   }
 
   onSelect(avatar) {
@@ -37,19 +38,24 @@ export default class AvatarPicker extends Component {
       return <div className={styles.container} />
     }
 
+    const { selected } = this.state
+
     return (
       <div className={styles.container}>
         <Button className={styles.button} onClick={this.onPick}>
-          Pick {emojiMap[this.state.selected]} as your avatar
+          Pick
+          <span className={styles.buttonIcon}>
+            <AvatarIcon id={selected} className={styles.buttonAvatar} />
+          </span>
+          as your avatar
         </Button>
 
         <div className={styles.avatarList}>
-          {map(emojiMap, (emoji, key) => (
+          {map(AvatarIcon.keys, key => (
             <AvatarListItem
-              highlighted={this.state.selected === key}
+              highlighted={selected === key}
               key={key}
-              name={key}
-              emoji={emoji}
+              icon={key}
               onSelect={this.onSelect}
             />
           ))}
@@ -58,7 +64,6 @@ export default class AvatarPicker extends Component {
     )
   }
 }
-
 
 styles = StyleSheet.create({
   container: {
@@ -100,5 +105,20 @@ styles = StyleSheet.create({
       opacity: 0,
       transform: 'translate3d(-50%, 2em, 0)',
     },
+  },
+
+  buttonIcon: {
+    display: 'inline-block',
+    position: 'relative',
+    width: '2em',
+    height: '1em',
+    margin: '0 0.25em',
+  },
+
+  buttonAvatar: {
+    position: 'absolute',
+    top: '-35%',
+    width: '2em',
+    height: '2em',
   },
 })

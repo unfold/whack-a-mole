@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import times from 'lodash/times'
 import { connect } from 'react-firebase'
 import loader from '../decorators/loader'
+import AvatarIcon from './AvatarIcon'
 import Hole from './Hole'
 import WinnerOverlay from './WinnerOverlay'
-import emojiMap from '../utils/emoji-map.json'
 
 const NUMBER_OF_HOLES = 6
 const SWITCH_TIMER = 1500
@@ -102,6 +102,8 @@ export default class Game extends Component {
       />
     ))
 
+    const { score, avatar } = this.props.participant
+
     return (
       <div>
         { this.props.winner &&
@@ -113,8 +115,8 @@ export default class Game extends Component {
 
         <button onClick={this.props.incrementScore}>Increment score</button>
         <div>
-          <span>{emojiMap[this.props.participant.avatar]}</span>
-          Score: {this.props.participant.score}
+          <AvatarIcon id={avatar} />
+          Score: {score}
         </div>
         <div>
           {holes}

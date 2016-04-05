@@ -47,9 +47,14 @@ const loaders = [
     },
   },
   {
-    test: /\.json/,
+    test: /\.json$/,
     exclude: /node_modules/,
     loader: 'json',
+  },
+  {
+    test: /\.svg$/,
+    exclude: /node_modules/,
+    loader: 'babel!svg-react',
   },
 ]
 

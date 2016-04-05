@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import look, { StyleSheet } from 'react-look'
+import cssEase from 'css-ease'
+import AvatarIcon from './AvatarIcon'
 
 let styles
 
@@ -7,13 +9,12 @@ let styles
 export default class AvatarListItem extends Component {
   static propTypes = {
     onSelect: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
-    emoji: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
     highlighted: PropTypes.bool,
   }
 
   onClick() {
-    this.props.onSelect(this.props.name)
+    this.props.onSelect(this.props.icon)
   }
 
   onClick = ::this.onClick
@@ -21,7 +22,7 @@ export default class AvatarListItem extends Component {
   render() {
     return (
       <div className={styles.item} onClick={this.onClick}>
-        <span className={styles.emoji}>{this.props.emoji}</span>
+        <AvatarIcon id={this.props.icon} className={styles.icon} />
       </div>
     )
   }
@@ -29,17 +30,18 @@ export default class AvatarListItem extends Component {
 
 styles = StyleSheet.create({
   item: {
-    padding: '1em',
-    transform: 'scale(2)',
-    transition: 'transform .3s ease-out',
-    userSelect: 'none',
+    width: 60,
+    height: 60,
+    margin: 10,
+    transition: `.1s transform ${cssEase['ease-out-back']}`,
 
     'highlighted=true': {
-      transform: 'scale(4)',
+      transform: 'scale(1.5)',
     },
   },
 
-  emoji: {
-    fontFamily: 'AppleColorEmoji',
+  icon: {
+    width: '100%',
+    height: '100%',
   },
 })
