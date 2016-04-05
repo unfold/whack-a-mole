@@ -9,7 +9,7 @@ export default class WinnerOverlay extends Component {
   render() {
     return (
       <div>
-        { this.props.participantWon ? 'YAAAH' : 'YOU LOST""!"'}
+        { this.props.participantWon ? 'YAAAH' : 'YOU LOST'}
       </div>
     )
   }

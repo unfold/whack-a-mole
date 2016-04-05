@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import ParticipantView from './ParticipantView'
 import Dashboard from './Dashboard'
+import { LookRoot, Presets, StyleSheet } from 'react-look'
+
+let styles
+const lookConfig = Presets['react-dom']
+lookConfig.styleElementId = 'react-styles'
 
 export default class Application extends Component {
   state = {
@@ -19,13 +24,31 @@ export default class Application extends Component {
 
   render() {
     return (
-      <div>
-        {
-          this.state.admin
-          ? <Dashboard />
-          : <ParticipantView />
-        }
-      </div>
+      <LookRoot config={lookConfig}>
+        <main className={styles.main}>
+          {
+            this.state.admin
+            ? <Dashboard />
+            : <ParticipantView />
+          }
+        </main>
+      </LookRoot>
     )
   }
 }
+
+styles = StyleSheet.create({
+  main: {
+    fontFamily: 'Lato',
+    fontSize: '20px',
+    lineHeight: 1.8,
+    letterSpacing: '0.01em',
+    WebkitFontSmoothing: 'antialiased',
+    WebkitTextSizeAdjust: '100%',
+
+    '@media(max-width: 700px)': {
+      fontSize: '18px',
+    },
+  },
+
+})

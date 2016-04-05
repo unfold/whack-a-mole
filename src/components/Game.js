@@ -1,15 +1,18 @@
 import React, { Component, PropTypes } from 'react'
 import times from 'lodash/times'
 import { connect } from 'react-firebase'
+import loader from '../decorators/loader'
 import Hole from './Hole'
 import WinnerOverlay from './WinnerOverlay'
+import emojiMap from '../utils/emoji-map.json'
 
 const NUMBER_OF_HOLES = 6
 const SWITCH_TIMER = 1500
 
 @connect(props => ({
-  score: `participants/${props.participantId}/score`,
+  participant: `participants/${props.participantId}`,
   winner: 'status/winner',
+  gameStarted: 'status/gameStarted',
 }), (firebase, props) => ({
   incrementScore: () => {
     firebase
@@ -18,21 +21,29 @@ const SWITCH_TIMER = 1500
   },
 }))
 
+@loader()
+
 export default class Game extends Component {
   static propTypes = {
     participantId: PropTypes.string.isRequired,
-    score: PropTypes.number,
+    participant: PropTypes.object.isRequired,
     winner: PropTypes.any,
   }
 
   constructor(props) {
     super(props)
 
-    this.setNewMoleHole = ::this.setNewMoleHole
     this.onWhack = ::this.onWhack
+    this.setNewMoleHole = ::this.setNewMoleHole
 
     this.state = {
       moleInHole: null,
+    }
+
+    this.allowInteraction = !this.props.winner && this.props.gameStarted
+
+    if (this.allowInteraction) {
+      this.setNewMoleHole()
     }
   }
 
@@ -40,12 +51,24 @@ export default class Game extends Component {
     this.setNewMoleHole()
   }
 
+  componentWillUpdate(nextProps) {
+    this.allowInteraction = !nextProps.winner && nextProps.gameStarted
+  }
+
+  componentDidUpdate() {
+    if (this.props.gameStarted && !this.switchMoleHoleTimeout) {
+      this.setNewMoleHole()
+    }
+  }
+
   componentWillUnmount() {
     clearTimeout(this.switchMoleHoleTimeout)
   }
 
   onWhack(holeNumber) {
-    if (this.state.moleInHole === holeNumber && !this.props.winner) {
+    const correctHole = this.state.moleInHole === holeNumber
+
+    if (correctHole && this.allowInteraction) {
       this.props.incrementScore()
       this.setNewMoleHole()
     }
@@ -55,15 +78,17 @@ export default class Game extends Component {
     const newMoleInHole = Math.floor(Math.random() * NUMBER_OF_HOLES)
     clearTimeout(this.switchMoleHoleTimeout)
 
-    if (newMoleInHole === this.state.moleInHole) {
-      return this.setNewMoleHole()
+    if (this.allowInteraction) {
+      if (newMoleInHole === this.state.moleInHole) {
+        return this.setNewMoleHole()
+      }
+
+      this.setState({
+        moleInHole: newMoleInHole,
+      })
+
+      this.switchMoleHoleTimeout = setTimeout(this.setNewMoleHole, SWITCH_TIMER)
     }
-
-    this.setState({
-      moleInHole: newMoleInHole,
-    })
-
-    this.switchMoleHoleTimeout = setTimeout(this.setNewMoleHole, SWITCH_TIMER)
   }
 
 
@@ -72,7 +97,7 @@ export default class Game extends Component {
       <Hole
         key={nth}
         number={nth}
-        hasMole={nth === this.state.moleInHole}
+        hasMole={nth === this.state.moleInHole && this.allowInteraction}
         onWhack={this.onWhack}
       />
     ))
@@ -87,7 +112,10 @@ export default class Game extends Component {
         }
 
         <button onClick={this.props.incrementScore}>Increment score</button>
-        Score: {this.props.score}
+        <div>
+          <span>{emojiMap[this.props.participant.avatar]}</span>
+          Score: {this.props.participant.score}
+        </div>
         <div>
           {holes}
         </div>

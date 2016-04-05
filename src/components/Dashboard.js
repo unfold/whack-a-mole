@@ -3,13 +3,16 @@ import map from 'lodash/map'
 import findKey from 'lodash/findKey'
 import { connect } from 'react-firebase'
 import mapValues from 'lodash/mapValues'
+import loader from '../decorators/loader'
 
 const GOAL = 5
 
 @connect(() => ({
   participants: 'participants',
+  gameStarted: 'status/startGame',
 }), firebase => ({
   announceWinner: winner => firebase.child('status').child('winner').set(winner),
+  startGame: () => firebase.child('status').child('gameStarted').set(true),
   resetGame: () => {
     firebase.child('status').set({
       gameStarted: false,
@@ -26,15 +29,19 @@ const GOAL = 5
   },
 }))
 
+@loader()
+
 export default class Dashboard extends Component {
   static propTypes = {
     announceWinner: PropTypes.func.isRequired,
     resetGame: PropTypes.func.isRequired,
+    startGame: PropTypes.func.isRequired,
+    gameStarted: PropTypes.func,
     participants: PropTypes.object,
   }
 
-  componentDidUpdate() {
-    const winnerId = findKey(this.props.participants, participant => participant.score >= GOAL)
+  componentWillUpdate(nextProps) {
+    const winnerId = findKey(nextProps.participants, participant => participant.score >= GOAL)
     const winner = winnerId && this.props.participants[winnerId]
 
     if (winner) {
@@ -57,6 +64,9 @@ export default class Dashboard extends Component {
     return (
       <div>
         <button onClick={this.props.resetGame} type="button">RESET</button>
+        { !this.props.gameStarted &&
+          <button onClick={this.props.startGame} type="button">START GAME</button>
+        }
         {participants}
       </div>
     )
