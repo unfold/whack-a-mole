@@ -117,7 +117,7 @@ styles = StyleSheet.create({
 
   buttonAvatar: {
     position: 'absolute',
-    top: '-50%',
+    top: '-35%',
     width: '2em',
     height: '2em',
   },
