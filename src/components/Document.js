@@ -111,7 +111,7 @@ export default function Document({ styles, children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style dangerouslySetInnerHTML={{ __html: documentStyles }} />
         <style id="react-styles" dangerouslySetInnerHTML={{ __html: styles }} />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css" />
       </head>
 
       <body>

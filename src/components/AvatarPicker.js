@@ -4,7 +4,6 @@ import AvatarListItem from './AvatarListItem'
 import AvatarIcon from './AvatarIcon'
 import Button from './Button'
 import map from 'lodash/map'
-import sample from 'lodash/sample'
 import cssEase from 'css-ease'
 
 let styles
@@ -17,7 +16,7 @@ export default class AvatarPicker extends Component {
   }
 
   state = {
-    selected: sample(AvatarIcon.keys),
+    selected: null,
   }
 
   onSelect(avatar) {

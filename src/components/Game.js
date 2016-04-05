@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react'
-import times from 'lodash/times'
 import { connect } from 'react-firebase'
 import loader from '../decorators/loader'
-import AvatarIcon from './AvatarIcon'
-import Hole from './Hole'
 import WinnerOverlay from './WinnerOverlay'
+import AvatarIcon from './AvatarIcon'
+import Holes from './Holes'
+import look, { StyleSheet } from 'react-look'
+import FillViewportHeight from './FillViewportHeight'
 
-const NUMBER_OF_HOLES = 6
-const SWITCH_TIMER = 1500
+let styles
 
 @connect(props => ({
   participant: `participants/${props.participantId}`,
@@ -16,13 +16,14 @@ const SWITCH_TIMER = 1500
 }), (firebase, props) => ({
   incrementScore: () => {
     firebase
-      .child('participants').child(props.participantId).child('score')
+      .child(`participants/${props.participantId}/score`)
       .transaction(score => score + 1)
   },
 }))
 
 @loader()
 
+@look
 export default class Game extends Component {
   static propTypes = {
     participantId: PropTypes.string.isRequired,
@@ -32,96 +33,131 @@ export default class Game extends Component {
 
   constructor(props) {
     super(props)
-
-    this.onWhack = ::this.onWhack
-    this.setNewMoleHole = ::this.setNewMoleHole
+    this.onWhackCorrectHole = ::this.onWhackCorrectHole
 
     this.state = {
-      moleInHole: null,
+      countdown: null,
     }
-
-    this.allowInteraction = !this.props.winner && this.props.gameStarted
-
-    if (this.allowInteraction) {
-      this.setNewMoleHole()
-    }
-  }
-
-  componentDidMount() {
-    this.setNewMoleHole()
   }
 
   componentWillUpdate(nextProps) {
-    this.allowInteraction = !nextProps.winner && nextProps.gameStarted
-  }
-
-  componentDidUpdate() {
-    if (this.props.gameStarted && !this.switchMoleHoleTimeout) {
-      this.setNewMoleHole()
+    if (!this.props.gameStarted && nextProps.gameStarted) {
+      this.onStartDowndown()
     }
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.switchMoleHoleTimeout)
+  onStartDowndown() {
+    this.setState({ countdown: 'Get ready' })
+    setTimeout(() =>
+      this.setState({ countdown: '3' })
+    , 2000)
+    setTimeout(() =>
+      this.setState({ countdown: '2' })
+    , 3000)
+    setTimeout(() =>
+      this.setState({ countdown: '1' })
+    , 4000)
+    setTimeout(() =>
+      this.setState({ countdown: null })
+    , 5000)
   }
 
-  onWhack(holeNumber) {
-    const correctHole = this.state.moleInHole === holeNumber
-
-    if (correctHole && this.allowInteraction) {
+  onWhackCorrectHole() {
+    if (!this.props.winner && this.props.gameStarted) {
       this.props.incrementScore()
-      this.setNewMoleHole()
     }
   }
 
-  setNewMoleHole() {
-    const newMoleInHole = Math.floor(Math.random() * NUMBER_OF_HOLES)
-    clearTimeout(this.switchMoleHoleTimeout)
-
-    if (this.allowInteraction) {
-      if (newMoleInHole === this.state.moleInHole) {
-        return this.setNewMoleHole()
-      }
-
-      this.setState({
-        moleInHole: newMoleInHole,
-      })
-
-      this.switchMoleHoleTimeout = setTimeout(this.setNewMoleHole, SWITCH_TIMER)
-    }
-  }
-
-
-  render() {
-    const holes = times(NUMBER_OF_HOLES, nth => (
-      <Hole
-        key={nth}
-        number={nth}
-        hasMole={nth === this.state.moleInHole && this.allowInteraction}
-        onWhack={this.onWhack}
-      />
-    ))
-
+  renderMessageboard() {
     const { score, avatar } = this.props.participant
+    let label = this.state.countdown
+
+    if (!this.props.gameStarted) {
+      label = 'Waiting for presenter to start game'
+    }
+
+    if (!label && this.state.gameStarted) {
+      label = 'GO!'
+    }
 
     return (
-      <div>
-        { this.props.winner &&
-          <WinnerOverlay
-            winner={this.props.winnerId}
-            participantWon={this.props.participantId === this.props.winner.id}
-          />
+      <div className={styles.messageBoard}>
+        { (label)
+          ? <div className={styles.label}>{label}</div>
+          : (
+            <div>
+              <div className={styles.avatar}>
+                <AvatarIcon id={avatar} />
+              </div>
+              <div className={styles.score}>
+                {score}
+              </div>
+            </div>
+            )
         }
-
-        <button onClick={this.props.incrementScore}>Increment score</button>
-        <div>
-          <AvatarIcon id={avatar} />
-          Score: {score}
-        </div>
-        <div>
-          {holes}
-        </div>
       </div>
     )
   }
+
+  render() {
+    return (
+      <FillViewportHeight>
+        <div className={styles.game}>
+          { this.props.winner &&
+            <WinnerOverlay
+              winner={this.props.winnerId}
+              participantWon={this.props.participantId === this.props.winner.id}
+            />
+          }
+
+          {this.renderMessageboard()}
+
+          <Holes
+            hibernating={!this.props.gameStarted || !!this.state.countdown}
+            isRunning={!this.props.winner}
+            onWhackCorrectHole={this.onWhackCorrectHole}
+          />
+        </div>
+      </FillViewportHeight>
+    )
+  }
 }
+
+styles = StyleSheet.create({
+  game: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: '1em',
+  },
+
+  messageBoard: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    padding: '0 1.5em',
+    maxWidth: '30em',
+    flexGrow: 1,
+    flexShrink: 0,
+
+  },
+
+  avatar: {
+    fontSize: '2em',
+  },
+
+  label: {
+    fontSize: '1.6em',
+    fontWeight: 300,
+    textAlign: 'center',
+    margin: '.8em 0',
+  },
+
+  score: {
+    fontSize: '1.6em',
+    fontWeight: 300,
+    textAlign: 'center',
+  },
+})
