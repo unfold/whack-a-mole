@@ -92,13 +92,17 @@ styles = StyleSheet.create({
     margin: '3em 0 4em',
     transition: `.4s opacity ${cssEase['ease-in-cubic']}`,
 
+    '@media(min-height:800px)': {
+      width: '24em',
+    },
+
     'showAvatarPicker=true': {
       opacity: 0,
     },
   },
 
   button: {
-    transition: `.7s transform ${cssEase['ease-in-expo']}, .7s opacity ${cssEase['ease-in-cubic']}`,
+    transition: `.4s transform ${cssEase['ease-in-expo']}, .4s opacity ${cssEase['ease-in-cubic']}`,
 
     'showAvatarPicker=true': {
       opacity: 0,

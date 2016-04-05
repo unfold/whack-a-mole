@@ -30,13 +30,13 @@ export default class AvatarListItem extends Component {
 
 styles = StyleSheet.create({
   item: {
-    width: 60,
-    height: 60,
-    margin: 10,
-    transition: `.1s transform ${cssEase['ease-out-back']}`,
+    width: '2.5em',
+    height: '2.5em',
+    margin: '1em',
+    transition: `.2s transform ${cssEase['ease-out-back']}`,
 
     'highlighted=true': {
-      transform: 'scale(1.5)',
+      transform: 'scale(2)',
     },
   },
 

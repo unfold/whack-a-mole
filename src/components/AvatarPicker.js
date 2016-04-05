@@ -79,6 +79,7 @@ styles = StyleSheet.create({
     transitionDelay: '.4s',
 
     'visible=false': {
+      height: 0,
       zIndex: -1,
       opacity: 0,
       transform: 'translate3d(0, 50%, 0)',
@@ -88,6 +89,7 @@ styles = StyleSheet.create({
   avatarList: {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     padding: '.5em',
   },
 
