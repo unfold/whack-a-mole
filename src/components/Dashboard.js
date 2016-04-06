@@ -4,8 +4,9 @@ import findKey from 'lodash/findKey'
 import { connect } from 'react-firebase'
 import mapValues from 'lodash/mapValues'
 import loader from '../decorators/loader'
+import analytics from '../utils/analytics'
 
-const GOAL = 5
+const GOAL = 20
 
 @connect(() => ({
   participants: 'participants',
@@ -38,6 +39,10 @@ export default class Dashboard extends Component {
     startGame: PropTypes.func.isRequired,
     gameStarted: PropTypes.func,
     participants: PropTypes.object,
+  }
+
+  componentDidMount() {
+    analytics.page('Dashboard')
   }
 
   componentWillUpdate(nextProps) {

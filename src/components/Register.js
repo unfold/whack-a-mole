@@ -6,6 +6,7 @@ import AvatarPicker from './AvatarPicker'
 import look, { StyleSheet } from 'react-look'
 import Button from './Button'
 import cssEase from 'css-ease'
+import analytics from '../utils/analytics'
 
 let styles
 
@@ -19,6 +20,10 @@ export default class Register extends Component {
     showAvatarPicker: false,
   }
 
+  componentDidMount() {
+    analytics.page('Register')
+  }
+
   onSelectAvatar(avatar) {
     this.props.onRegister({
       score: 0,
@@ -29,6 +34,7 @@ export default class Register extends Component {
   onSelectAvatar = ::this.onSelectAvatar
 
   showAvatarPicker() {
+    analytics.page('Select avatar')
     this.setState({ showAvatarPicker: !this.state.showAvatarPicker })
   }
 

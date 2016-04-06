@@ -6,6 +6,7 @@ import AvatarIcon from './AvatarIcon'
 import Holes from './Holes'
 import look, { StyleSheet } from 'react-look'
 import FillViewportHeight from './FillViewportHeight'
+import analytics from '../utils/analytics'
 
 let styles
 
@@ -38,6 +39,10 @@ export default class Game extends Component {
     this.state = {
       countdown: null,
     }
+  }
+
+  componentDidMount() {
+    analytics.page('Game')
   }
 
   componentWillUpdate(nextProps) {

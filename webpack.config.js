@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 const path = require('path')
+import reduce from 'lodash/reduce'
 
 const production = process.env.NODE_ENV === 'production'
 const devtool = production ? 'hidden-source-map' : 'eval-source-map'
@@ -58,8 +59,19 @@ const loaders = [
   },
 ]
 
+const env = {
+  GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
+}
+
 const plugins = [
   new webpack.PrefetchPlugin('react'),
+  new webpack.DefinePlugin(reduce(env, (prop, value, key) => {
+    if (value) {
+      prop['process.env.' + key] = JSON.stringify(value)
+    }
+
+    return env
+  }, {})),
 ]
 
 if (production) {
