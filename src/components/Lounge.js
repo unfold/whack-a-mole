@@ -10,6 +10,8 @@ import FillViewportHeight from './FillViewportHeight'
 import AvatarIcon from './AvatarIcon'
 import sample from 'lodash/sample'
 import random from 'lodash/random'
+import CSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
+import cssEase from 'css-ease'
 
 let styles
 
@@ -58,7 +60,18 @@ export default class Lounge extends Component {
               }
             </div>
 
-            <div className={styles.list}>
+            <CSSTransitionGroup
+              className={styles.list}
+              component="div"
+              transitionName={{
+                enter: styles.avatarEnter,
+                enterActive: styles.avatarEnterActive,
+                leave: styles.avatarLeave,
+                leaveActive: styles.avatarLeaveActive,
+              }}
+              transitionEnterTimeout={1000}
+              transitionLeaveTimeout={1000}
+            >
               {map(this.props.participants, (participant, key) => (
                 <AvatarIcon
                   className={styles.avatar}
@@ -66,7 +79,7 @@ export default class Lounge extends Component {
                   id={participant.avatar}
                 />
               ))}
-            </div>
+            </CSSTransitionGroup>
 
             <div className={styles.buttonOverlay}>
               <Button
@@ -118,6 +131,24 @@ styles = StyleSheet.create({
     height: '3em',
   },
 
+  avatarEnter: {
+    transform: 'scale(0.5)',
+    opacity: 0,
+  },
+
+  avatarEnterActive: {
+    transition: `.3s ${cssEase['ease-out-back']}`,
+    transform: 'none',
+    opacity: 1,
+  },
+
+  avatarLeave: {},
+
+  avatarLeaveActive: {
+    transition: `.3s ${cssEase['ease-in-cubic']}`,
+    opacity: 0,
+    transform: 'scale(0.5)',
+  },
 
   button: {
     margin: '0 .5em',
