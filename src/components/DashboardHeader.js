@@ -10,9 +10,11 @@ export default props => (
 styles = StyleSheet.create({
   header: {
     borderBottom: '1px solid #E1E1E1',
-    padding: '1em',
+    padding: '.8em',
     textAlign: 'center',
-    fontSize: '1.4em',
+    fontWeight: 700,
+    color: '#FD0042',
+    fontSize: '1.6em',
     lineHeight: 1,
     letterSpacing: '0.95px',
   },
