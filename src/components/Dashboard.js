@@ -23,14 +23,7 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    // const participants = map(this.props.participants, (participant, id) => (
-    //   <div key={id}>
-    //     <div>{participant.avatar}</div>
-    //     <div>Score: {participant.score}</div>
-    //   </div>
-    // ))
-
-    if (this.props.gameStarted) {
+    if (this.props.gameStarted && this.props.participants) {
       return <Scoreboard participants={this.props.participants} />
     }
 

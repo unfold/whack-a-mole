@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 import mapValues from 'lodash/mapValues'
+import { StyleSheet } from 'react-look'
 import DashboardHeader from './DashboardHeader'
 import { connect } from 'react-firebase'
 import findKey from 'lodash/findKey'
 import Button from './Button'
+import ScoreboardList from './ScoreboardList'
 
-const GOAL = 20
+let styles
 
-@connect(() => ({
-  participants: 'participants',
-}), firebase => ({
+import { GOAL } from '../constants'
+
+@connect(null, firebase => ({
   announceWinner: winner => firebase.child('status').child('winner').set(winner),
   resetGame: () => {
     firebase.child('status').set({
@@ -26,6 +28,7 @@ const GOAL = 20
     })
   },
 }))
+
 export default class Lounge extends Component {
   static propTypes = {
     participants: PropTypes.object.isRequired,
@@ -55,8 +58,19 @@ export default class Lounge extends Component {
         <DashboardHeader>
           Scoreboard
         </DashboardHeader>
-        <Button onClick={this.props.resetGame}>Restart game</Button>
+        <ScoreboardList participants={this.props.participants} />
+        <div className={styles.buttonWrapper}>
+          <Button onClick={this.props.resetGame}>Restart</Button>
+        </div>
       </div>
     )
   }
 }
+
+styles = StyleSheet.create({
+  buttonWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '2em 0',
+  },
+})

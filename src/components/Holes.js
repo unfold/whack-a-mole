@@ -2,11 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import times from 'lodash/times'
 import Hole from './Hole'
 import { StyleSheet } from 'react-look'
+import { NUMBER_OF_HOLES, SWITCH_TIMER } from '../constants'
 
 let styles
-
-const NUMBER_OF_HOLES = 9
-const SWITCH_TIMER = 1000
 
 export default class Holes extends Component {
   static propTypes = {

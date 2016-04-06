@@ -12,18 +12,17 @@ import sample from 'lodash/sample'
 import random from 'lodash/random'
 import CSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 import cssEase from 'css-ease'
+import { GOAL } from '../constants'
 
 let styles
 
-@connect(() => ({
-  participants: 'participants',
-}), firebase => ({
+@connect(null, firebase => ({
   startGame: () => firebase.child('status').child('gameStarted').set(true),
   simulatePlayers: () => {
     for (let i = 0; i < random(2, 80); i++) {
       const ref = firebase.child('participants').push({
         avatar: sample(avatars.keys()),
-        score: 0,
+        score: random(0, GOAL),
       })
       ref.onDisconnect().remove()
     }
@@ -113,7 +112,7 @@ styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: '2em',
+    margin: '2em 0 .5em',
     textAlign: 'center',
     fontSize: '1.4em',
   },
