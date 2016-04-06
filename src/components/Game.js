@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-firebase'
 import loader from '../decorators/loader'
 import WinnerOverlay from './WinnerOverlay'
-import AvatarIcon from './AvatarIcon'
 import Holes from './Holes'
 import look, { StyleSheet } from 'react-look'
 import FillViewportHeight from './FillViewportHeight'
 import analytics from '../utils/analytics'
+import GameStatus from './GameStatus'
 
 let styles
 
@@ -63,45 +63,17 @@ export default class Game extends Component {
       this.setState({ countdown: '1' })
     , 4000)
     setTimeout(() =>
-      this.setState({ countdown: null })
+      this.setState({ countdown: 'GO!' })
     , 5000)
+    setTimeout(() =>
+      this.setState({ countdown: null })
+    , 6000)
   }
 
   onWhackCorrectHole() {
     if (!this.props.winner && this.props.gameStarted) {
       this.props.incrementScore()
     }
-  }
-
-  renderMessageboard() {
-    const { score, avatar } = this.props.participant
-    let label = this.state.countdown
-
-    if (!this.props.gameStarted) {
-      label = 'Waiting for presenter to start game'
-    }
-
-    if (!label && this.state.gameStarted) {
-      label = 'GO!'
-    }
-
-    return (
-      <div className={styles.messageBoard}>
-        { (label)
-          ? <div className={styles.label}>{label}</div>
-          : (
-            <div>
-              <div className={styles.avatar}>
-                <AvatarIcon id={avatar} />
-              </div>
-              <div className={styles.score}>
-                {score}
-              </div>
-            </div>
-            )
-        }
-      </div>
-    )
   }
 
   render() {
@@ -115,7 +87,12 @@ export default class Game extends Component {
             />
           }
 
-          {this.renderMessageboard()}
+          <GameStatus
+            gameStarted={this.props.gameStarted}
+            countdown={this.state.countdown}
+            avatar={this.props.participant.avatar}
+            score={this.props.participant.score}
+          />
 
           <Holes
             hibernating={!this.props.gameStarted || !!this.state.countdown}

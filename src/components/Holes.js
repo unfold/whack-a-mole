@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import times from 'lodash/times'
 import Hole from './Hole'
 import { StyleSheet } from 'react-look'
-import { NUMBER_OF_HOLES, SWITCH_TIMER } from '../constants'
+import { NUMBER_OF_HOLES, MIN_TIMER, MAX_TIMER } from '../constants'
+import random from 'lodash/random'
 
 let styles
 
@@ -54,7 +55,10 @@ export default class Holes extends Component {
       moleInHole: newMoleInHole,
     })
 
-    this.switchMoleHoleTimeout = setTimeout(this.setNewMoleHole, SWITCH_TIMER)
+    this.switchMoleHoleTimeout = setTimeout(
+      this.setNewMoleHole,
+      random(MIN_TIMER, MAX_TIMER)
+    )
   }
 
   render() {

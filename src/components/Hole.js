@@ -56,7 +56,7 @@ styles = StyleSheet.create({
     background: 'linear-gradient(-180deg, #FF0077 0%, #FD0042 100%)',
     boxShadow: '0px 2px 8px 0px rgba(0,0,0,0.19)',
     transform: 'scale(.1)',
-    transition: `.3s ${cssEase['ease-out-cubic']}, opacity .2s ${cssEase['ease-in-cubic']}`,
+    transition: `.2s ${cssEase['ease-out-cubic']}, opacity .2s ${cssEase['ease-in-cubic']}`,
 
     'hibernating=true': {
       background: 'linear-gradient(-180deg, #A5A5A5 0%, #999 100%)',
@@ -69,7 +69,7 @@ styles = StyleSheet.create({
     'hasMole=true': {
       opacity: 1,
       transform: 'scale(1)',
-      transition: `.4s .1s ${cssEase['ease-out-back']}`,
+      transition: `.3s ${cssEase['ease-out-back']}`,
     },
   },
 })
