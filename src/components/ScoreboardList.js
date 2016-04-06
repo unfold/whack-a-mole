@@ -50,7 +50,7 @@ export default class ScoreboardList extends Component {
 
 styles = StyleSheet.create({
   list: {
-    margin: '.5em',
+    margin: '.5em 2em .5em 1em',
   },
 
   item: {

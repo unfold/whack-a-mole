@@ -16,6 +16,7 @@ export default class ResultScreen extends Component {
   static propTypes = {
     winner: PropTypes.object.isRequired,
     participantWon: PropTypes.bool,
+    isDashboard: PropTypes.bool,
   }
 
   renderWinningScreen() {
@@ -42,7 +43,7 @@ export default class ResultScreen extends Component {
   render() {
     return (
       <div className={styles.container}>
-        {this.props.participantWon
+        {this.props.participantWon || this.props.isDashboard
           ? this.renderWinningScreen()
           : this.renderLoserScreen()
         }

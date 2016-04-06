@@ -6,12 +6,15 @@ import { connect } from 'react-firebase'
 import findKey from 'lodash/findKey'
 import Button from './Button'
 import ScoreboardList from './ScoreboardList'
+import ResultScreen from './ResultScreen'
 
 let styles
 
 import { GOAL } from '../constants'
 
-@connect(null, firebase => ({
+@connect(() => ({
+  winner: 'status/winner',
+}), firebase => ({
   announceWinner: winner => firebase.child('status').child('winner').set(winner),
   resetGame: () => {
     firebase.child('status').set({
@@ -34,6 +37,7 @@ export default class Lounge extends Component {
     participants: PropTypes.object.isRequired,
     announceWinner: PropTypes.func.isRequired,
     resetGame: PropTypes.func.isRequired,
+    winner: PropTypes.object,
   }
 
   constructor(props) {
@@ -58,6 +62,12 @@ export default class Lounge extends Component {
         <DashboardHeader>
           Scoreboard
         </DashboardHeader>
+        { this.props.winner &&
+          <ResultScreen
+            winner={this.props.winner}
+            isDashboard
+          />
+        }
         <ScoreboardList participants={this.props.participants} />
         <div className={styles.buttonWrapper}>
           <Button onClick={this.props.resetGame}>Restart</Button>
