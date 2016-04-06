@@ -85,10 +85,12 @@ export default class Lounge extends Component {
                 className={styles.button}
                 onClick={this.props.startGame}
               >Start game</Button>
-              <Button
-                className={styles.button}
-                onClick={this.props.simulatePlayers}
-              >Simulate players</Button>
+              { process.env.NODE_ENV !== 'production' &&
+                <Button
+                  className={styles.button}
+                  onClick={this.props.simulatePlayers}
+                >Simulate players</Button>
+              }
             </div>
           </div>
         </div>

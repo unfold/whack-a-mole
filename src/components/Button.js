@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     color: '#FD0042',
     fontSize: '1.2em',
     padding: '.6em 1.4em .7em',
-    border: '1px solid #FD0042',
+    border: '1px solid currentColor',
   },
 })
 

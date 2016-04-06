@@ -3,7 +3,9 @@ import { connect } from 'react-firebase'
 import Register from './Register'
 import Game from './Game'
 
-@connect(() => ({}), firebase => ({
+@connect(() => ({
+  gameStarted: 'status/gameStarted',
+}), firebase => ({
   register: participant => {
     const ref = firebase.child('participants').push(participant)
     ref.onDisconnect().remove()
@@ -31,7 +33,7 @@ export default class ParticipantView extends Component {
     return (
       <div className="PlayerView">
         { !this.state.participantId
-          ? <Register onRegister={::this.onRegister} />
+          ? <Register gameStarted={this.props.gameStarted} onRegister={::this.onRegister} />
           : <Game participantId={this.state.participantId} />
         }
       </div>
