@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-firebase'
 import loader from '../decorators/loader'
-import WinnerOverlay from './WinnerOverlay'
 import Holes from './Holes'
 import look, { StyleSheet } from 'react-look'
 import FillViewportHeight from './FillViewportHeight'
 import analytics from '../utils/analytics'
 import GameStatus from './GameStatus'
+import ResultScreen from './ResultScreen'
 
 let styles
 
@@ -80,13 +80,6 @@ export default class Game extends Component {
     return (
       <FillViewportHeight>
         <div className={styles.game}>
-          { this.props.winner &&
-            <WinnerOverlay
-              winner={this.props.winnerId}
-              participantWon={this.props.participantId === this.props.winner.id}
-            />
-          }
-
           <GameStatus
             gameStarted={this.props.gameStarted}
             countdown={this.state.countdown}
@@ -94,11 +87,17 @@ export default class Game extends Component {
             score={this.props.participant.score}
           />
 
-          <Holes
-            hibernating={!this.props.gameStarted || !!this.state.countdown}
-            isRunning={!this.props.winner}
-            onWhackCorrectHole={this.onWhackCorrectHole}
-          />
+          { this.props.winner
+            ? <ResultScreen
+              winner={this.props.winner}
+              participantWon={this.props.participantId === this.props.winner.id}
+            />
+            : <Holes
+              hibernating={!this.props.gameStarted || !!this.state.countdown}
+              isRunning={!this.props.winner}
+              onWhackCorrectHole={this.onWhackCorrectHole}
+            />
+          }
         </div>
       </FillViewportHeight>
     )

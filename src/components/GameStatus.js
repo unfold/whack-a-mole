@@ -87,6 +87,7 @@ styles = StyleSheet.create({
     marginTop: '-1px',
     backgroundImage: 'linear-gradient(90deg, #FF009A 2%, #FE0061 100%)',
     transition: `width .4s ${cssEase['ease-out-expo']}`,
+    borderRadius: '1px',
   },
 
 })

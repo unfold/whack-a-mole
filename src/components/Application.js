@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ParticipantView from './ParticipantView'
 import Dashboard from './Dashboard'
 import { LookRoot, Presets, StyleSheet } from 'react-look'
+import ConnectionMessage from './ConnectionMessage'
 
 let styles
 const lookConfig = Presets['react-dom']
@@ -26,6 +27,7 @@ export default class Application extends Component {
     return (
       <LookRoot config={lookConfig}>
         <main className={styles.main}>
+          <ConnectionMessage />
           {
             this.state.admin
             ? <Dashboard />
@@ -46,6 +48,7 @@ styles = StyleSheet.create({
     letterSpacing: '0.01em',
     WebkitFontSmoothing: 'antialiased',
     WebkitTextSizeAdjust: '100%',
+    WebkitTapHighlightColor: 'rgba(255, 255, 255, .7)',
 
     '@media(max-width: 700px)': {
       fontSize: '18px',
