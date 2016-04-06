@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import shuffle from 'lodash/shuffle'
 
-const avatars = require.context('../assets/avatars')
+export const avatars = require.context('../assets/avatars')
 
 export default class AvatarIcon extends Component {
   static propTypes = {

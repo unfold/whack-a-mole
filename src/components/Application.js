@@ -41,6 +41,7 @@ styles = StyleSheet.create({
   main: {
     fontFamily: 'Lato',
     fontSize: '20px',
+    color: '#242424',
     lineHeight: 1.8,
     letterSpacing: '0.01em',
     WebkitFontSmoothing: 'antialiased',
