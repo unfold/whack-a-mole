@@ -9,3 +9,6 @@ npm install
 npm run serve
 ```
 Go to [localhost:5050](http://localhost:5050)
+
+## Admin
+The game has a participant view, and an admin view to view all players and start/stop the game. To access the admin view press the `A` key anywhere in the game.
