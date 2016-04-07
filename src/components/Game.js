@@ -71,7 +71,7 @@ export default class Game extends Component {
   }
 
   onWhackCorrectHole() {
-    if (!this.props.winner && this.props.gameStarted) {
+    if (!this.props.winner && this.props.gameStarted && !this.state.countdown) {
       this.props.incrementScore()
     }
   }
